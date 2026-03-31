@@ -5,14 +5,14 @@ public class Card
     private double saldo;
     private int cardId;
 
-    // Maakt een nieuwe OV-chipkaart aan met een kaart-ID en beginsaldo
+    // maakt een nieuwe kaart aan
     public Card(int cardId, double beginSaldo)
     {
         this.cardId = cardId;
         this.saldo = beginSaldo;
     }
 
-    // Trekt het instaptarief af van het saldo bij het inchecken
+    // inchecken, saldo wordt minder
     public void inchecken(double instapTarief)
     {
         if (saldo >= instapTarief)
@@ -26,31 +26,34 @@ public class Card
         }
     }
 
-    // Bevestigt dat de kaart heeft ingecheckt
     public void checkIn()
     {
         System.out.println("Kaart " + cardId + " heeft ingecheckt.");
     }
 
-    // Bevestigt dat de kaart heeft uitgecheckt
     public void checkOut()
     {
         System.out.println("Kaart " + cardId + " heeft uitgecheckt.");
     }
 
-    // Geeft het huidige saldo terug
     public double getSaldo()
     {
         return saldo;
     }
 
-    // Stelt een nieuw saldo in — nooit lager dan 0
+    // saldo mag niet negatief zijn
     public void setSaldo(double saldo)
     {
-        this.saldo = Math.max(0, saldo);
+        if (saldo < 0)
+        {
+            this.saldo = 0;
+        }
+        else
+        {
+            this.saldo = saldo;
+        }
     }
 
-    // Geeft het kaart-ID terug
     public int getCardId()
     {
         return cardId;
