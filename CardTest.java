@@ -39,7 +39,7 @@ public class CardTest
                 case "1":
                     System.out.println("\n-- Inchecken --");
                     lezer.showInstapTarief();
-                    lezer.inchecken(kaart);
+                    lezer.inchecken(kaart, scanner);
                     break;
                  // Uitchecken is alleen mogelijk als de kaart eerst is ingecheckt
                 case "2":
@@ -50,7 +50,7 @@ public class CardTest
                     }
                     else
                     {
-                        lezer.uitchecken(kaart);
+                        lezer.uitchecken(kaart, scanner);
                     }
                     break;
                  // Lees de kaart uit en toon het huidige saldo
