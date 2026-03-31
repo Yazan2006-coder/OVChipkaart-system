@@ -20,6 +20,7 @@ public class CardTest
         System.out.printf("Welkom! Uw beginsaldo: EUR %.2f%n", beginSaldo);
 
         boolean running = true;
+     // Blijf het menu tonen totdat de gebruiker kiest om af te sluiten
         while (running)
         {
             System.out.println("\n--- Menu ---");
@@ -34,12 +35,13 @@ public class CardTest
 
             switch (keuze)
             {
+        	// Toon instaptarief en check de kaart in
                 case "1":
                     System.out.println("\n-- Inchecken --");
                     lezer.showInstapTarief();
                     lezer.inchecken(kaart);
                     break;
-
+                 // Uitchecken is alleen mogelijk als de kaart eerst is ingecheckt
                 case "2":
                     System.out.println("\n-- Uitchecken --");
                     if (!lezer.isCheckIn())
@@ -51,22 +53,22 @@ public class CardTest
                         lezer.uitchecken(kaart);
                     }
                     break;
-
+                 // Lees de kaart uit en toon het huidige saldo
                 case "3":
                     System.out.println("\n-- Saldo bekijken --");
                     oplaadPunt.readCard(kaart);
                     break;
-
+                 // Laat de gebruiker een bedrag invoeren om op te laden
                 case "4":
                     System.out.println("\n-- Saldo opladen --");
                     oplaadPunt.oplaad(kaart, scanner);
                     break;
-
+                 // Stopt de loop en sluit het programma af
                 case "5":
                     System.out.println("Tot ziens!");
                     running = false;
                     break;
-
+                 // Ongeldige invoer, vraag opnieuw
                 default:
                     System.out.println("Ongeldige keuze. Kies 1 t/m 5.");
             }

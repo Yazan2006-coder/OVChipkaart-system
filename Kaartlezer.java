@@ -17,6 +17,7 @@ public class Kaartlezer
 
     public void inchecken(Card ovChipkaart)
     {
+	// met ! wordt de boolean's waarde omgekeerd
         if (!checkIn)
         {
             System.out.println("Kaartlezer: kaart gelezen.");
@@ -55,17 +56,17 @@ public class Kaartlezer
             System.out.println("Kaartlezer: niet ingecheckt!");
         }
     }
-
+ // Toont het huidige instaptarief
     public void showInstapTarief()
     {
         System.out.printf("Instaptarief: EUR %.2f%n", instapTarief);
     }
-
+ // Geeft de incheck-status terug
     public boolean isCheckIn()
     {
         return checkIn;
     }
-
+ // Geeft het instaptarief terug
     public double getInstapTarief()
     {
         return instapTarief;
