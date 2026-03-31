@@ -23,7 +23,7 @@ public class Kaartlezer
     {
         this.checkIn = false;
         // vast instaptarief
-        this.instapTarief = 1.07;
+        this.instapTarief = 2.50;
         this.incheckStad = null;
     }
 
@@ -118,6 +118,10 @@ public class Kaartlezer
             System.out.println("Reis van " + incheckStad.getNaam() + " naar " + uitcheckStad.getNaam());
             System.out.printf("Afstand (pythagoras): %.1f km%n", afstand);
             System.out.printf("Reiskosten: EUR %.2f%n", reiskosten);
+            
+            // instaptarief wordt teruggestort bij uitchecken
+            ovChipkaart.setSaldo(ovChipkaart.getSaldo() + instapTarief);
+            System.out.printf("Instaptarief van EUR %.2f teruggestort.%n", instapTarief);
 
             if (ovChipkaart.getSaldo() >= reiskosten)
             {

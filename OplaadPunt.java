@@ -28,7 +28,7 @@ public class OplaadPunt
     public void oplaad(Card kaart, Scanner scanner)
     {
         double huidigSaldo = kaart.getSaldo();
-        System.out.printf("Huidig saldo: EUR %.2f%n", huidigSaldo);
+        System.out.printf("Kaart gelezen. Huidig saldo: EUR %.2f%n", huidigSaldo);
 
         System.out.println("Hoe wilt u opladen?");
         System.out.println("  1. Vast bedrag toevoegen (bijv. EUR 10 erbij)");

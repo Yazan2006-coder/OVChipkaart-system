@@ -24,10 +24,4 @@ public class Locatie {
     {
         return y;
     }
-    
-    public double berekenAfstand(Locatie andere) {
-        double a = this.x - andere.x;
-        double b = this.y - andere.y;
-        return Math.sqrt(a * a + b * b);
-    }
 }
