@@ -4,12 +4,16 @@ public class Card
 {
     private double saldo;
     private int cardId;
+    private Locatie incheckStad;
+    private Locatie huidigeLocatie;
 
     // maakt een nieuwe kaart aan
-    public Card(int cardId, double beginSaldo)
+    public Card(int cardId, double beginSaldo, Locatie beginLocatie)
     {
         this.cardId = cardId;
         this.saldo = beginSaldo;
+        this.incheckStad = null;
+        this.huidigeLocatie = beginLocatie;
     }
 
     // inchecken, saldo wordt minder
@@ -57,5 +61,25 @@ public class Card
     public int getCardId()
     {
         return cardId;
+    }
+
+    public Locatie getIncheckStad()
+    {
+        return incheckStad;
+    }
+
+    public void setIncheckStad(Locatie locatie)
+    {
+        this.incheckStad = locatie;
+    }
+
+    public Locatie getHuidigeLocatie()
+    {
+        return huidigeLocatie;
+    }
+
+    public void setHuidigeLocatie(Locatie locatie)
+    {
+        this.huidigeLocatie = locatie;
     }
 }

@@ -2,7 +2,8 @@ package OVchipkaart;
 
 public class Locatie {
     private String naam;
-    private double x, y;
+    private double x;
+    private double y;
 
     public Locatie(String naam, double x, double y) {
         this.naam = naam;
