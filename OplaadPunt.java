@@ -33,11 +33,16 @@ public class OplaadPunt
         System.out.println("Hoe wilt u opladen?");
         System.out.println("  1. Vast bedrag toevoegen (bijv. EUR 10 erbij)");
         System.out.println("  2. Opladen tot een bepaald bedrag (bijv. tot EUR 20)");
-        System.out.print("Kies methode (1 of 2): ");
+        System.out.println("  0. Annuleren");
+        System.out.print("Kies methode (1, 2 of 0): ");
 
         String methodekeuze = scanner.nextLine().trim();
 
-        if (methodekeuze.equals("1"))
+        if (methodekeuze.equals("0"))
+        {
+            System.out.println("Opladen geannuleerd.");
+        }
+        else if (methodekeuze.equals("1"))
         {
             oplaadMetBedrag(kaart, scanner, huidigSaldo);
         }
@@ -47,7 +52,7 @@ public class OplaadPunt
         }
         else
         {
-            System.out.println("Ongeldige keuze. Kies 1 of 2.");
+            System.out.println("Ongeldige keuze. Kies 1, 2 of 0.");
         }
     }
 
