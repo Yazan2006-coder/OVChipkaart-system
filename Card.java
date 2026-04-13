@@ -15,7 +15,12 @@ public class Card
         this.incheckStad = null;
         this.huidigeLocatie = beginLocatie;
     }
-
+    // overloaded constructor zonder locatie, beginlocatie is dan null
+    public Card(int cardId, double beginSaldo)
+    {
+        this(cardId, beginSaldo, null);
+    }
+    
     // inchecken, saldo wordt minder
     public void inchecken(double instapTarief)
     {
