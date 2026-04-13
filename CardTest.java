@@ -11,7 +11,6 @@ public class CardTest
         Scanner scanner = new Scanner(System.in);
 
         // steden aanmaken met x en y coordinaten
-        // coordinaten zijn gebaseerd op een simpele kaart van nederland
         Locatie amsterdam  = new Locatie("Amsterdam",  0,    0);
         Locatie rotterdam  = new Locatie("Rotterdam",  -45,  -60);
         Locatie denhaag    = new Locatie("Den Haag",   -55,  -70);
@@ -31,96 +30,165 @@ public class CardTest
         Kaartlezer lezerGroningen  = new Kaartlezer(groningen);
         Kaartlezer lezerMaastricht = new Kaartlezer(maastricht);
 
-        // alle lezers in een array zodat we ze makkelijk kunnen opzoeken
         Kaartlezer[] lezers = {
             lezerAmsterdam, lezerRotterdam, lezerDenhaag, lezerUtrecht,
             lezerArnhem, lezerEindhoven, lezerGroningen, lezerMaastricht
         };
 
-        // willekeurig beginsaldo tussen 5 en 25
-        double beginSaldo = 5.0 + (random.nextInt(2000) / 100.0);
-        // beginlocatie is Amsterdam
-        Card kaart = new Card(1001, beginSaldo, amsterdam);
+        // meerdere kaarten aanmaken met uniek id en willekeurig beginsaldo
+        Card[] kaarten = {
+            new Card(1001, 5.0 + (random.nextInt(2000) / 100.0), amsterdam),
+            new Card(1002, 5.0 + (random.nextInt(2000) / 100.0), rotterdam),
+            new Card(1003, 5.0 + (random.nextInt(2000) / 100.0), utrecht),
+            new Card(1004, 5.0 + (random.nextInt(2000) / 100.0), arnhem)
+        };
+
         OplaadPunt oplaadPunt = new OplaadPunt();
 
         System.out.println("=== OV Chipkaart Systeem ===");
-        System.out.printf("Welkom! Uw beginlocatie: %s%n", kaart.getHuidigeLocatie().getNaam());
-        System.out.printf("Uw beginsaldo: EUR %.2f%n", beginSaldo);
 
-        boolean running = true;
-        while (running)
+        // buitenste loop: blijf op het kaart-keuze scherm tot de gebruiker afsluit
+        boolean programmaActief = true;
+        while (programmaActief)
         {
-            System.out.println("\n--- Menu ---");
-            System.out.println("1. Inchecken");
-            System.out.println("2. Uitchecken");
-            System.out.println("3. Saldo bekijken");
-            System.out.println("4. Saldo opladen");
-            System.out.println("5. Afsluiten");
-            System.out.print("Kies een optie: ");
+            // kaart kiezer scherm
+            Card geselecteerdeKaart = kiesKaart(scanner, kaarten);
 
-            String keuze = scanner.nextLine().trim();
-
-            switch (keuze)
+            // null betekent dat de gebruiker koos om af te sluiten
+            if (geselecteerdeKaart == null)
             {
-                case "1":
-                    System.out.println("\n-- Inchecken --");
-                    System.out.println("Huidige locatie: " + kaart.getHuidigeLocatie().getNaam());
-                    // zoek de kaartlezer op de huidige locatie van de kaart
-                    Kaartlezer incheckLezer = zoekLezer(lezers, kaart.getHuidigeLocatie());
-                    incheckLezer.showInstapTarief();
-                    incheckLezer.inchecken(kaart);
-                    break;
+                System.out.println("Programma afgesloten. Tot ziens!");
+                programmaActief = false;
+                continue;
+            }
 
-                case "2":
-                    System.out.println("\n-- Uitchecken --");
-                    if (kaart.getIncheckStad() == null)
-                    {
-                        System.out.println("U kunt niet uitchecken zonder eerst ingecheckt te zijn!");
-                    }
-                    else
-                    {
-                        Kaartlezer uitcheckLezer = kiesKaartlezer(scanner, lezers);
-                        if (uitcheckLezer != null)
+            System.out.println("\nKaart " + geselecteerdeKaart.getCardId() + " geselecteerd.");
+            System.out.printf("Locatie: %s | Saldo: EUR %.2f%n",
+                geselecteerdeKaart.getHuidigeLocatie().getNaam(),
+                geselecteerdeKaart.getSaldo());
+
+            // binnenste loop: hoofdmenu voor de geselecteerde kaart
+            boolean menuActief = true;
+            while (menuActief)
+            {
+                System.out.println("\n--- Menu (kaart " + geselecteerdeKaart.getCardId() + ") ---");
+                System.out.println("1. Inchecken");
+                System.out.println("2. Uitchecken");
+                System.out.println("3. Saldo bekijken");
+                System.out.println("4. Saldo opladen");
+                System.out.println("5. Kaart wisselen");
+                System.out.print("Kies een optie: ");
+
+                String keuze = scanner.nextLine().trim();
+
+                switch (keuze)
+                {
+                    case "1":
+                        System.out.println("\n-- Inchecken --");
+                        System.out.println("Huidige locatie: " + geselecteerdeKaart.getHuidigeLocatie().getNaam());
+                        Kaartlezer incheckLezer = zoekLezer(lezers, geselecteerdeKaart.getHuidigeLocatie());
+                        incheckLezer.showInstapTarief();
+                        incheckLezer.inchecken(geselecteerdeKaart);
+                        break;
+
+                    case "2":
+                        System.out.println("\n-- Uitchecken --");
+                        if (geselecteerdeKaart.getIncheckStad() == null)
                         {
-                            uitcheckLezer.uitchecken(kaart);
+                            System.out.println("U kunt niet uitchecken zonder eerst ingecheckt te zijn!");
                         }
-                    }
-                    break;
+                        else
+                        {
+                            Kaartlezer uitcheckLezer = kiesKaartlezer(scanner, lezers);
+                            if (uitcheckLezer != null)
+                            {
+                                uitcheckLezer.uitchecken(geselecteerdeKaart);
+                            }
+                        }
+                        break;
 
-                case "3":
-                    System.out.println("\n-- Saldo bekijken --");
-                    oplaadPunt.readCard(kaart);
-                    break;
+                    case "3":
+                        System.out.println("\n-- Saldo bekijken --");
+                        oplaadPunt.readCard(geselecteerdeKaart);
+                        break;
 
-                case "4":
-                    System.out.println("\n-- Saldo opladen --");
-                    oplaadPunt.oplaad(kaart, scanner);
-                    break;
+                    case "4":
+                        System.out.println("\n-- Saldo opladen --");
+                        oplaadPunt.oplaad(geselecteerdeKaart, scanner);
+                        break;
 
-                case "5":
-                    System.out.println("Tot ziens!");
-                    running = false;
-                    break;
+                    case "5":
+                        // terug naar kaart kiezer
+                        System.out.println("Terug naar kaartkeuze...");
+                        menuActief = false;
+                        break;
 
-                default:
-                    System.out.println("Ongeldige keuze. Kies 1 t/m 5.");
+                    default:
+                        System.out.println("Ongeldige keuze. Kies 1 t/m 5.");
+                }
             }
         }
 
         scanner.close();
     }
 
+    // toont alle kaarten en laat de gebruiker er een kiezen
+    // geeft null terug als de gebruiker wil afsluiten
+    static Card kiesKaart(Scanner scanner, Card[] kaarten)
+    {
+        System.out.println("\n=== Kaartkeuze ===");
+        System.out.println("Welke kaart wilt u gebruiken?");
+
+        for (int i = 0; i < kaarten.length; i++)
+        {
+            System.out.printf("%d. Kaart %d | Locatie: %s | Saldo: EUR %.2f%n",
+                (i + 1),
+                kaarten[i].getCardId(),
+                kaarten[i].getHuidigeLocatie().getNaam(),
+                kaarten[i].getSaldo());
+        }
+
+        System.out.println("0. Afsluiten");
+        System.out.print("Kies een kaart: ");
+
+        String keuze = scanner.nextLine().trim();
+
+        // 0 = afsluiten
+        if (keuze.equals("0"))
+        {
+            return null;
+        }
+
+        try
+        {
+            int index = Integer.parseInt(keuze) - 1;
+            if (index >= 0 && index < kaarten.length)
+            {
+                return kaarten[index];
+            }
+            else
+            {
+                System.out.println("Ongeldige keuze.");
+                return kiesKaart(scanner, kaarten);
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            System.out.println("Ongeldige invoer.");
+            return kiesKaart(scanner, kaarten);
+        }
+    }
+
     // zoek de kaartlezer die op de gegeven stad staat
-    static Kaartlezer zoekLezer(Kaartlezer[] lezers, Locatie stad)
+    static Kaartlezer zoekLezer(Kaartlezer[] lezers, Locatie Locatie)
     {
         for (int i = 0; i < lezers.length; i++)
         {
-            if (lezers[i].getLocatie().getNaam().equals(stad.getNaam()))
+            if (lezers[i].getLocatie().getNaam().equals(Locatie.getNaam()))
             {
                 return lezers[i];
             }
         }
-        // als er geen lezer gevonden wordt, geef de eerste terug
         return lezers[0];
     }
 
@@ -155,5 +223,4 @@ public class CardTest
             return null;
         }
     }
-
 }
